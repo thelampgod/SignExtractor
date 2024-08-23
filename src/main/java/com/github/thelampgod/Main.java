@@ -22,7 +22,9 @@ public class Main {
         if (args.length == 2) {
             output = args[1];
         }
-        FileWriter writer = new FileWriter(output + "/signs.txt");
+        final FileWriter writer = new FileWriter(output + "/signs.txt");
+        final SNBTWriter nbt = new SNBTWriter();
+
         AtomicInteger chunks = new AtomicInteger();
         Arrays.asList(new File(regionFolder).listFiles()).stream()
                 .filter(file -> file.getName().endsWith(".mca"))
@@ -35,7 +37,6 @@ public class Main {
                         throw new RuntimeException(e);
                     }
                     System.out.println("Processing " + mca.getName());
-                    final SNBTWriter nbt = new SNBTWriter();
                     mca.forEach(chunk -> {
                         chunk.getData().getList("block_entities").stream().map(tag -> (CompoundTag) tag).forEach(tile -> {
                             if (!tile.getString("id").equals("minecraft:sign")) return;
