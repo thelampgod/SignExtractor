@@ -44,7 +44,6 @@ public class Main {
         File region = new File(worldFolder + "/region/");
         if (!region.exists()) return;
 
-//        AtomicInteger chunks = new AtomicInteger();
         Arrays.asList(region.listFiles()).stream()
                 .filter(file -> file.getName().endsWith(".mca"))
                 .parallel()
@@ -72,14 +71,12 @@ public class Main {
                         throw new RuntimeException(e);
                     }
                 });
-//        System.out.printf("Processed %s chunks", chunks);
     }
 
     private static void fixEntities(String worldFolder) {
         File region = new File(worldFolder + "/entities/");
         if (!region.exists()) return;
 
-//        AtomicInteger chunks = new AtomicInteger();
         Arrays.asList(region.listFiles()).stream()
                 .filter(file -> file.getName().endsWith(".mca"))
                 .parallel()
@@ -99,8 +96,8 @@ public class Main {
                             CompoundTag data = chunk.getData();
                             data.getList("Entities").stream().map(tag -> (CompoundTag) tag)
                                     .forEach(tag -> {
-                                        data.remove("CaptureTimestamp");
-                                        data.remove("Author");
+                                        tag.remove("CaptureTimestamp");
+                                        tag.remove("Author");
                                     });
                         });
 
@@ -110,7 +107,6 @@ public class Main {
                         throw new RuntimeException(e);
                     }
                 });
-//        System.out.printf("Processed %s chunks", chunks);
     }
 
     private static void fixLevelDat(String worldFolder) throws IOException {
