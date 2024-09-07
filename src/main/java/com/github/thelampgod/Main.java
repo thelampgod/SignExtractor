@@ -2,7 +2,7 @@ package com.github.thelampgod;
 
 import net.querz.mca.MCAFile;
 import net.querz.nbt.CompoundTag;
-import net.querz.nbt.io.snbt.SNBTWriter;
+import net.querz.nbt.ListTag;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -23,8 +23,8 @@ public class Main {
             output = args[1];
         }
         final FileWriter writer = new FileWriter(output + "/signs.txt");
-        final SNBTWriter nbt = new SNBTWriter();
 
+        writer.write("x,y,z,line1,line2,line3,line4,color,glowing\n");
         AtomicInteger chunks = new AtomicInteger();
         Arrays.asList(new File(regionFolder).listFiles()).stream()
                 .filter(file -> file.getName().endsWith(".mca"))
@@ -40,8 +40,21 @@ public class Main {
                     mca.forEach(chunk -> {
                         chunk.getData().getList("block_entities").stream().map(tag -> (CompoundTag) tag).forEach(tile -> {
                             if (!tile.getString("id").equals("minecraft:sign")) return;
+                            CompoundTag front_text = tile.getCompound("front_text");
+                            ListTag messages = front_text.getList("messages");
+                            String formatted = String.format("%d,%d,%d,%s,%s,%s,%s,%s,%s",
+                                    tile.getInt("x"),
+                                    tile.getInt("y"),
+                                    tile.getInt("z"),
+                                    messages.getString(0),
+                                    messages.getString(1),
+                                    messages.getString(2),
+                                    messages.getString(3),
+                                    front_text.getString("color"),
+                                    front_text.getBoolean("has_glowing_text")
+                            );
                             try {
-                                writer.write(nbt.toString(tile) + "\n");
+                                writer.write(formatted + "\n");
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
