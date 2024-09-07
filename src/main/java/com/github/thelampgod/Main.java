@@ -124,9 +124,10 @@ public class Main {
                             for (int y = 0; y < 16; ++y) {
                                 CompoundTag block1 = parser1.getBlockAt(x, y, z);
                                 CompoundTag block2 = parser2.getBlockAt(x, y, z);
-                                if (!block1.equals(block2)) {
-                                    String block1Name = block1.getString("Name");
-                                    String block2Name = block2.getString("Name");
+                                String block1Name = block1.getString("Name");
+                                String block2Name = block2.getString("Name");
+
+                                if (!block1Name.equals(block2Name)) {
                                     removals.addTo(block1Name, 1);
                                     additions.addTo(block2Name, 1);
                                 }
