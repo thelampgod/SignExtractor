@@ -5,7 +5,7 @@ Should support any world 1.20 and newer.
 
 ## Usage
 
-`java -jar SignExtractor-all.jar <region folder>`
+`java -jar SignExtractor-1.0-SNAPSHOT-all.jar <region folder>`
 
 ## Building
 
